@@ -1,23 +1,9 @@
-#include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <unistd.h>
-
-// Объявления функций
-char *myStrchr(const char *str, int c);
-size_t myStrlen(const char *str);
-int myStrcmp(const char *str1, const char *str2);
-char *myStrcpy(char *str1, const char *str2);
-char *myRand(char *secret_code);
-int myAtoi(const char *str);
-void startGame(int argc, char **argv);
+#include "funcions.h"
 
 // Главная функция
 int main(int argc, char **argv) {
   // Вызов главной функции игры
   startGame(argc, argv);
-
   return 0;
 }
 
@@ -29,9 +15,9 @@ void startGame(int argc, char **argv) {
 
   // Обработка аргументов командной строки
   for (size_t i = 1; i < argc; i++) {
-    if ((myStrcmp(argv[i], "-c")) == 0) {
+    if (myStrcmp(argv[i], "-c") == 0) {
       myStrcpy(secretCode, argv[++i]);
-    } else if ((myStrcmp(argv[i], "-t")) == 0) {
+    } else if (myStrcmp(argv[i], "-t") == 0) {
       attempts = myAtoi(argv[++i]);
     }
   }
@@ -41,25 +27,67 @@ void startGame(int argc, char **argv) {
     myRand(secretCode);
   }
 
-  // Вывод информации о игре
-  printf("Секретный код: %s\n", secretCode);
-  printf("Попыток: %d\n", attempts);
+  // Вывод информации о игре на английском
+  printf("Secret Code: %s\n", secretCode);
+  printf("Attempts: %d\n", attempts);
+
+  // Запуск процесса игры
+  gameProcess(attempts, secretCode);
 
   // Освобождение памяти
   free(secretCode);
 }
 
+// Функция для игрового процесса
+void gameProcess(int attempts, char *secret_code) {
+  int i = 0;
+  char *enter_code;
+  printf("Will you find the secret code?\nPlease enter a valid guess.\n");
+
+  while (i < attempts) {
+    printf("Round %d\n", i);
+
+    if (myStrcmp((enter_code = myScanf()), "stop") == 0) {
+      free(enter_code); // Освобождаем память после использования
+      return;
+    }
+
+    // Вывод информации о правильно и неправильно угаданных символах
+    int wellPlaced = 0, misplaced = 0;
+    for (int j = 0; j < 4; ++j) {
+      if (enter_code[j] == secret_code[j]) {
+        wellPlaced++;
+      } else if (myStrchr(secret_code, enter_code[j]) != NULL) {
+        misplaced++;
+      }
+    }
+    // Проверка на выигрыш
+    if (wellPlaced == 4) {
+      printf("Congratz! You did it!\n");
+      return;
+    }
+    printf("Well placed pieces: %d\nMisplaced pieces: %d\n", wellPlaced,
+           misplaced);
+
+    free(enter_code); // Освобождаем память после использования
+
+    i++;
+  }
+
+  // Если игрок не угадал секретный код за отведенное количество попыток
+  printf("You didn't find the secret code. Try again!\n");
+}
+
 // Функция генерации случайного секретного кода
 char *myRand(char *secret_code) {
-  int i = 0;
   srand(time(0));
-  char valid_numbers;
+  int i = 0;
 
   while (i < 4) {
-    valid_numbers = (rand() % 9) + 48;
+    char valid_numbers = (rand() % 9) + '0';
+    int found = 0;
 
     // Проверка, есть ли valid_numbers уже в secret_code
-    int found = 0;
     for (int j = 0; j < i; ++j) {
       if (secret_code[j] == valid_numbers) {
         found = 1;
@@ -159,4 +187,43 @@ int myAtoi(const char *str) {
   }
 
   return num;
+}
+
+// Функция чтения строки с клавиатуры
+char *myScanf() {
+  char c;
+  int i = 0;
+  char *str = malloc(sizeof(char) * 6); // Выделение памяти под строку
+  printf(">");
+
+  if (str == NULL) {
+    perror("Memory allocation error");
+    exit(EXIT_FAILURE);
+  }
+
+  while (read(STDIN_FILENO, &c, 1)) {
+    if (c == '\n' || i == 5) {
+      str[i] = '\0'; // Завершаем строку нулевым символом
+      return str;
+    }
+
+    str[i] = c;
+    i++;
+
+    // Если выделенная память заканчивается, увеличиваем ее размер
+    if (i >= 5) {
+      char *temp = realloc(
+          str,
+          i + 1); // Увеличиваем размер на 1 для завершающего нулевого символа
+      if (temp == NULL) {
+        free(str); // Освобождаем память в случае неудачи realloc
+        perror("Memory allocation error");
+        exit(EXIT_FAILURE);
+      }
+      str = temp;
+    }
+  }
+
+  // В случае ошибки возвращаем NULL
+  return NULL;
 }
