@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include <limits.h>
 
 // Объявления функций
 void startGame(int argc, char **argv);

@@ -14,7 +14,7 @@ void startGame(int argc, char **argv) {
   int attempts = 10;
 
   // Обработка аргументов командной строки
-  for (size_t i = 1; i < argc; i++) {
+  for (int i = 1; i < argc; i++) {
     if (myStrcmp(argv[i], "-c") == 0) {
       myStrcpy(secretCode, argv[++i]);
     } else if (myStrcmp(argv[i], "-t") == 0) {
