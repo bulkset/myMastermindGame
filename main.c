@@ -1,14 +1,18 @@
 #include <stdio.h>
+#include <limits.h>
+#include <unistd.h>
 
 size_t myStrlen(const char *str);
 int myStrcmp(const char *str1, const char *str2);
 char *myStrcpy(char *str1, const char *str2);
+int myAtoi(const char *str);
 
 int main(int argc, char **argv)
 {
     // printf("Strlen: %d", myStrlen("test"));
     // printf("Strcpy: %s", myStrcpy("test", "DPDPDPDP");
     // printf("Strcmp: %s", myStrcmp("test", "test"));
+    // printf("Atoi: %d", myAtoi("5432"));
 
     return 0;
 }
@@ -59,4 +63,38 @@ char *myStrcpy(char *str1, const char *str2)
         str1[i] = str2[i];
     }
     return str1;
+}
+
+int myAtoi(const char *str) {
+    int i = 0;
+    long int num = 0;
+    int flag = 0;
+
+    while (str[i] == ' ') {
+        i++;
+    }
+
+    if (str[i] == '+' || str[i] == '-') {
+        if (str[i] == '-') {
+            flag = 1;
+        }
+        i++;
+    }
+
+    while (str[i] >= '0' && str[i] <= '9') {
+        num = num * 10 + (str[i] - '0');
+
+        if (!flag && num > INT_MAX) {
+            return INT_MAX;
+        } else if (flag && -num < INT_MIN) {
+            return INT_MIN;
+        }
+        
+        i++;
+    }
+    if (flag) {
+        num = -num;
+    }
+
+    return num;
 }
