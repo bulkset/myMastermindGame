@@ -1,4 +1,4 @@
-#include <funcions.h>
+#include "funcions.h"
 
 // Основная функция
 int main(int argc, char **argv)
