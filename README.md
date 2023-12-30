@@ -34,7 +34,7 @@ This program is an implementation of the Mastermind game. In the Mastermind game
 
 ## Example Usage
 ```
-./my_mastermind -c "0123"
+./myMastermindGame -c "0123"
 ```
 
 This will start the game with the specified secret code "0123".
@@ -42,7 +42,7 @@ This will start the game with the specified secret code "0123".
 ### Example
 
 ```bash
-./my_mastermind -c "0123"
+./myMastermindGame -c "0123"
 Will you find the secret code?
 Please enter a valid guess.
 ---
