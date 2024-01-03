@@ -3,12 +3,12 @@
 // Основная функция
 int main(int argc, char **argv)
 {
-    startGame(argc, argv);
+    start_game(argc, argv);
     return 0;
 }
 
 // Инициализация игры
-void startGame(int argc, char **argv)
+void start_game(int argc, char **argv)
 {
     char secretCode[CODE_LENGTH + 1];
     int attempts = MAX_ATTEMPTS;
@@ -16,31 +16,31 @@ void startGame(int argc, char **argv)
     // Обработка аргументов командной строки
     for (int i = 1; i < argc; i++)
     {
-        if (myStrcmp(argv[i], "-c") == 0)
+        if (my_strcmp(argv[i], "-c") == 0)
         {
-            myStrcpy(secretCode, argv[++i]);
+            my_strcpy(secretCode, argv[++i]);
         }
-        else if (myStrcmp(argv[i], "-t") == 0)
+        else if (my_strcmp(argv[i], "-t") == 0)
         {
-            attempts = myAtoi(argv[++i]);
+            attempts = my_atoi(argv[++i]);
         }
     }
 
     // Если не предоставлен секретный код, сгенерировать новый
-    if (secretCode[0] == '\0' || myStrlen(secretCode) != CODE_LENGTH || !isValidInput(secretCode) || !areDigitsUnique(secretCode))
+    if (secretCode[0] == '\0' || my_strlen(secretCode) != CODE_LENGTH || !is_valid_input(secretCode) || !are_digits_unique(secretCode))
     {
-        generateSecretCode(secretCode);
+        generate_secret_code(secretCode);
     }
 
     // Вывод информации об игре
-    displayGameInfo(secretCode, attempts);
+    display_game_info(secretCode, attempts);
 
     // Запуск процесса игры
-    gameProcess(secretCode,attempts);
+    game_process(secretCode,attempts);
 }
 
 // Игровой процесс
-void gameProcess(const char *secretCode,const int attempts)
+void game_process(const char *secretCode,const int attempts)
 {
     int round = 0;
     char *userGuess;
@@ -52,7 +52,7 @@ void gameProcess(const char *secretCode,const int attempts)
         printf("Round %d\n", round);
 
         // Получение ввода от пользователя
-        userGuess = myScanf();
+        userGuess = my_scanf();
 
         // Проверка на неполный ввод или запрос пользователя на выход
         if (userGuess == NULL)
@@ -67,7 +67,7 @@ void gameProcess(const char *secretCode,const int attempts)
         }
 
         // Валидация ввода пользователя
-        if (myStrlen(userGuess) != CODE_LENGTH || !isValidInput(userGuess) || !areDigitsUnique(userGuess))
+        if (my_strlen(userGuess) != CODE_LENGTH || !is_valid_input(userGuess) || !are_digits_unique(userGuess))
         {
             printf("Invalid input. Please enter a %d-digit code with unique values between %d and %d.\n", CODE_LENGTH, MIN_DIGIT, MAX_DIGIT);
             free(userGuess);
@@ -82,7 +82,7 @@ void gameProcess(const char *secretCode,const int attempts)
             {
                 wellPlaced++;
             }
-            else if (myStrchr(secretCode, userGuess[i]) != NULL)
+            else if (my_strchr(secretCode, userGuess[i]) != NULL)
             {
                 misplaced++;
             }
@@ -107,7 +107,7 @@ void gameProcess(const char *secretCode,const int attempts)
 }
 
 // Генерация случайного секретного кода
-char *generateSecretCode(char *secretCode)
+char *generate_secret_code(char *secretCode)
 {
     srand(time(NULL));
 
@@ -130,7 +130,7 @@ char *generateSecretCode(char *secretCode)
 }
 
 // Пользовательская функция scanf для чтения ввода пользователя
-char *myScanf()
+char *my_scanf()
 {
     char c;
     int i = 0;
@@ -140,7 +140,7 @@ char *myScanf()
 
     if (inputString == NULL)
     {
-        printErrorMessage("Memory allocation error");
+        print_error_message("Memory allocation error");
     }
 
     // Чтение ввода посимвольно
@@ -163,7 +163,7 @@ char *myScanf()
             if (temp == NULL)
             {
                 free(inputString);
-                printErrorMessage("Memory allocation error");
+                print_error_message("Memory allocation error");
             }
             inputString = temp;
         }
@@ -180,14 +180,14 @@ char *myScanf()
 }
 
 // Вывод информации об игре
-void displayGameInfo(const char *secretCode, int attempts)
+void display_game_info(const char *secretCode, int attempts)
 {
     printf("Secret Code: %s\n", secretCode);
     printf("Attempts: %d\n", attempts);
 }
 
 // Валидация ввода на наличие только допустимых цифр
-int isValidInput(const char *str)
+int is_valid_input(const char *str)
 {
     for (int i = 0; i < CODE_LENGTH; i++)
     {
@@ -200,7 +200,7 @@ int isValidInput(const char *str)
 }
 
 // Проверка, что все цифры во вводе уникальны
-int areDigitsUnique(const char *str)
+int are_digits_unique(const char *str)
 {
     for (int i = 0; i < CODE_LENGTH; i++)
     {
@@ -216,7 +216,7 @@ int areDigitsUnique(const char *str)
 }
 
 // Пользовательская функция atoi для преобразования строк в целые числа
-size_t myAtoi(const char *str)
+size_t my_atoi(const char *str)
 {
     int i = 0;
     long int num = 0;
@@ -266,7 +266,7 @@ size_t myAtoi(const char *str)
 }
 
 // Пользовательская функция сравнения строк
-int myStrcmp(const char *str1, const char *str2)
+int my_strcmp(const char *str1, const char *str2)
 {
     while (*str1 != '\0' && *str2 != '\0')
     {
@@ -286,9 +286,9 @@ int myStrcmp(const char *str1, const char *str2)
 }
 
 // Пользовательская функция копирования строк
-char *myStrcpy(char *dest, const char *src)
+char *my_strcpy(char *dest, const char *src)
 {
-    size_t lenStr2 = myStrlen(src);
+    size_t lenStr2 = my_strlen(src);
 
     for (size_t i = 0; i <= lenStr2; i++)
     {
@@ -298,7 +298,7 @@ char *myStrcpy(char *dest, const char *src)
 }
 
 // Пользовательская функция определения длины строки
-size_t myStrlen(const char *str)
+size_t my_strlen(const char *str)
 {
     size_t length = 0;
 
@@ -312,7 +312,7 @@ size_t myStrlen(const char *str)
 }
 
 // Пользовательская функция поиска символа в строке
-char *myStrchr(const char *str, int c)
+char *my_strchr(const char *str, int c)
 {
     while (*str != '\0')
     {
@@ -326,7 +326,7 @@ char *myStrchr(const char *str, int c)
 }
 
 // Вывод сообщений об ошибке
-void printErrorMessage(const char *message)
+void print_error_message(const char *message)
 {
     fprintf(stderr, "%s\n", message);
 }

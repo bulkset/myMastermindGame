@@ -18,16 +18,16 @@ enum
 };
 
 // Объявление функций
-int myStrcmp(const char *str1, const char *str2);
-char *myStrcpy(char *dest, const char *src);
-size_t myStrlen(const char *str);
-char *myStrchr(const char *str, int c);
-size_t myAtoi(const char *str);
-int isValidInput(const char *str);
-int areDigitsUnique(const char *str);
-void printErrorMessage(const char *message);
-void startGame(int argc, char **argv);
-void gameProcess(const char *secretCode,const int attempts);
-char *generateSecretCode(char *secretCode);
-char *myScanf();
-void displayGameInfo(const char *secretCode, int attempts);
+int my_strcmp(const char *str1, const char *str2);
+char *my_strcpy(char *dest, const char *src);
+size_t my_strlen(const char *str);
+char *my_strchr(const char *str, int c);
+size_t my_atoi(const char *str);
+int is_valid_input(const char *str);
+int are_digits_unique(const char *str);
+void print_error_message(const char *message);
+void start_game(int argc, char **argv);
+void game_process(const char *secretCode,const int attempts);
+char *generate_secret_code(char *secretCode);
+char *my_scanf();
+void display_game_info(const char *secretCode, int attempts);
