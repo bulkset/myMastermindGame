@@ -36,19 +36,18 @@ void startGame(int argc, char **argv)
     displayGameInfo(secretCode, attempts);
 
     // Запуск процесса игры
-    gameProcess(secretCode);
+    gameProcess(secretCode,attempts);
 }
 
 // Игровой процесс
-void gameProcess(const char *secretCode)
+void gameProcess(const char *secretCode,const int attempts)
 {
     int round = 0;
     char *userGuess;
-
     printf("Will you find the secret code?\nPlease enter a valid guess.\n");
 
     // Основной цикл игры
-    while (1)
+    while (round < attempts)
     {
         printf("Round %d\n", round);
 
@@ -148,7 +147,7 @@ char *myScanf()
     while (read(STDIN_FILENO, &c, 1))
     {
         // Проверка на новую строку или достижение максимальной длины
-        if (c == '\n' || i == CODE_LENGTH)
+        if (c == '\n')
         {
             inputString[i] = '\0';
             return (c == '\n') ? inputString : (char *)INPUT_NOT_COMPLETE;
@@ -168,6 +167,13 @@ char *myScanf()
             }
             inputString = temp;
         }
+    }
+
+    // Проверка на нажатие Ctrl+D (EOF)
+    if (i == 0)
+    {
+        free(inputString);
+        return (char *)INPUT_NOT_COMPLETE;
     }
 
     return NULL;

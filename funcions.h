@@ -27,7 +27,7 @@ int isValidInput(const char *str);
 int areDigitsUnique(const char *str);
 void printErrorMessage(const char *message);
 void startGame(int argc, char **argv);
-void gameProcess(const char *secretCode);
+void gameProcess(const char *secretCode,const int attempts);
 char *generateSecretCode(char *secretCode);
 char *myScanf();
 void displayGameInfo(const char *secretCode, int attempts);
