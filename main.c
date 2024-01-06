@@ -34,6 +34,8 @@ void game_process(const char *secretCode, const int attempts) {
 
   while (round < attempts) {
     printf("Round %d\n", round);
+    printf("> ");
+    fflush(stdout);
     userGuess = my_scanf();
 
     if (userGuess == NULL) {
@@ -107,12 +109,10 @@ char *my_scanf() {
     return NULL;
   }
 
-  printf("> ");
-
   while (read(STDIN_FILENO, &c, 1)) {
-    if (c == EOF) {
+    if (c == 4) {
       free(inputString);
-      return NULL;
+      return "stop";
     }
 
     if (c == '\n') {
