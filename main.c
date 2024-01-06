@@ -7,7 +7,7 @@ int main(int argc, char **argv) {
 
 void start_game(int argc, char **argv) {
   char secretCode[CODE_LENGTH + 1];
-  int attempts = MAX_ATTEMPTS;
+  int attempts = DEFAULT_ATTEMPTS;
 
   for (int i = 1; i < argc; i++) {
     if (my_strcmp(argv[i], "-c") == 0) {
@@ -34,7 +34,6 @@ void game_process(const char *secretCode, const int attempts) {
 
   while (round < attempts) {
     printf("Round %d\n", round);
-
     userGuess = my_scanf();
 
     if (userGuess == NULL) {
@@ -108,9 +107,14 @@ char *my_scanf() {
     return NULL;
   }
 
-  printf(">");
+  printf("> ");
 
   while (read(STDIN_FILENO, &c, 1)) {
+    if (c == EOF) {
+      free(inputString);
+      return NULL;
+    }
+
     if (c == '\n') {
       inputString[i] = '\0';
       return (c == '\n') ? inputString : (char *)INPUT_NOT_COMPLETE;

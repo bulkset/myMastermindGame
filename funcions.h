@@ -8,7 +8,7 @@
 enum
 {
     CODE_LENGTH = 4,
-    MAX_ATTEMPTS = 10,
+    DEFAULT_ATTEMPTS = 10,
     MAX_DIGIT = 8,
     MIN_DIGIT = 0,
     MAX_INPUT_LENGTH = CODE_LENGTH + 1,
@@ -18,16 +18,16 @@ enum
 };
 
 // Объявление функций
-int my_strcmp(const char *str1, const char *str2);
-char *my_strcpy(char *dest, const char *src);
-size_t my_strlen(const char *str);
-char *my_strchr(const char *str, int c);
-size_t my_atoi(const char *str);
-int is_valid_input(const char *str);
-int are_digits_unique(const char *str);
-void print_error_message(const char *message);
+int my_strcmp(const char *, const char *);
+char *my_strcpy(char *, const char *);
+size_t my_strlen(const char *);
+char *my_strchr(const char *, int);
+size_t my_atoi(const char *);
+int is_valid_input(const char *);
+int are_digits_unique(const char *);
+void print_error_message(const char *);
 void start_game(int argc, char **argv);
-void game_process(const char *secretCode,const int attempts);
-char *generate_secret_code(char *secretCode);
+void game_process(const char *, const int);
+char *generate_secret_code(char *);
 char *my_scanf();
-void display_game_info(const char *secretCode, int attempts);
+void display_game_info(const char *, int);
